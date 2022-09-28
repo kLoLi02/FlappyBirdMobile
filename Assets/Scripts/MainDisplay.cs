@@ -4,17 +4,17 @@ using UnityEngine;
 
 public class MainDisplay : MonoBehaviour
 {
-    [SerializeField] Animator flappybirdImageAimator;
+    [SerializeField] Animator flappyBirdTextAimator;
     [SerializeField] GameObject tapImage;
 
     void Start()
     {
-        flappybirdImageAimator.enabled = false; 
+        flappyBirdTextAimator.enabled = false; 
     }
 
     public void MainDisplayStartProcess()
     {
-        flappybirdImageAimator.enabled = true;
+        flappyBirdTextAimator.enabled = true;
         tapImage.SetActive(false);
     }
 }
