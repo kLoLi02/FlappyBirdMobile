@@ -6,6 +6,7 @@ public class PipeSpawner : MonoBehaviour
 {
     [SerializeField] GameObject pipe;
     [SerializeField] float delayToSpawn;
+    [SerializeField] float height = 1f;
 
     float time = 0;
 
@@ -21,11 +22,7 @@ public class PipeSpawner : MonoBehaviour
 
     void CreatePipe()
     {
-        Instantiate(pipe, transform.position, Quaternion.identity);
-    }
-
-    void CreatePipe(float height, float xPosition)
-    {
-        Instantiate(pipe, transform.position, Quaternion.identity);
+        var randomHeight = transform.position.y + Random.Range(-height, height);
+        Instantiate(pipe, new Vector2(transform.position.x, randomHeight), Quaternion.identity);
     }
 }
