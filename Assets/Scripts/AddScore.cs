@@ -11,10 +11,9 @@ public class AddScore : MonoBehaviour
         pointAudio = GetComponent<AudioSource>();
     }
 
-
-    void OnCollisionEnter2D(Collision2D collision)
+    void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.tag == "Bird")
+        if (collision.CompareTag("Bird"))
         {
             Score.score++;
             pointAudio.Play();

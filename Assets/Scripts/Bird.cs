@@ -8,6 +8,7 @@ public class Bird : MonoBehaviour
 {
     [Header("Movement")]
     [SerializeField] float velocity;
+    [SerializeField] float rotationRegulation = 10f;
 
     [Header("Sounds")]
     [SerializeField] AudioClip hitClip;
@@ -61,11 +62,15 @@ public class Bird : MonoBehaviour
                 }
                 break;
             case State.Playing:
-                if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began && state == State.Playing)
+                if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
                 {
-                    audioSource.PlayOneShot(wingClip);
                     rb.velocity = Vector2.up * velocity;
+                    audioSource.PlayOneShot(wingClip);
                 }
+
+                float rotationZ = Mathf.Clamp(rb.velocity.y * rotationRegulation, -45, 30);
+                transform.eulerAngles = new Vector3(0, 0, rotationZ);
+
                 break;
             case State.Dying:
                 DyingProcess();
@@ -75,16 +80,17 @@ public class Bird : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D collision)
     {
-        state = State.Dying;
-    }
-
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.gameObject.tag == "Ground")
+        if (collision.CompareTag("Pipe"))
         {
             state = State.Dying;
         }
     }
+
+    void OnCollisionEnter2D(Collision2D collision)
+    {
+        state = State.Dying;
+    }
+
     void DyingProcess()
     {
         gameManager.GameOverProcess();

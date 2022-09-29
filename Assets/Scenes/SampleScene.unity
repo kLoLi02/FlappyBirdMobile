@@ -1068,6 +1068,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   velocity: 3
+  rotationRegulation: 10
   hitClip: {fileID: 8300000, guid: 5a950c53a2fd5384ab5f569722dbcdbc, type: 3}
   wingClip: {fileID: 8300000, guid: 845f659c962b3e54c8a5e821b30a8ff8, type: 3}
 --- !u!50 &557529452
@@ -1089,7 +1090,7 @@ Rigidbody2D:
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 1
 --- !u!58 &557529453
 CircleCollider2D:
