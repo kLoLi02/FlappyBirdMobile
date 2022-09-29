@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class GameOverCanvas : MonoBehaviour
+public class GameOverDisplay : MonoBehaviour
 {
     public void PlayAgain()
     {

@@ -5,8 +5,7 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    [SerializeField] GameObject gameOverDisplay;
-    
+    GameOverDisplay gameOverDisplay;
     PipeSpawner pipeSpawner;
     IdleMovement idleMovement;
     SpriteScroller[] spriteScrollers;
@@ -15,6 +14,7 @@ public class GameManager : MonoBehaviour
 
     void Awake()
     {
+        gameOverDisplay = FindObjectOfType<GameOverDisplay>();
         pipeSpawner = FindObjectOfType<PipeSpawner>();
         idleMovement = FindObjectOfType<IdleMovement>();
         spriteScrollers = FindObjectsOfType<SpriteScroller>();
@@ -24,7 +24,7 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        gameOverDisplay.SetActive(false);
+        gameOverDisplay.gameObject.SetActive(false);
         pipeSpawner.enabled = false;
         score.gameObject.SetActive(false);
     }
@@ -40,7 +40,7 @@ public class GameManager : MonoBehaviour
     public void GameOverProcess()
     {
         pipeSpawner.enabled = false;
-        gameOverDisplay.SetActive(true);
+        gameOverDisplay.gameObject.SetActive(true);
         Move.speed = 0;
 
         foreach (var spriteScroller in spriteScrollers)

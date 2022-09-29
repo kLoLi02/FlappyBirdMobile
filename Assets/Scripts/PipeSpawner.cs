@@ -23,6 +23,7 @@ public class PipeSpawner : MonoBehaviour
     void CreatePipe()
     {
         var randomHeight = transform.position.y + Random.Range(-height, height);
-        Instantiate(pipe, new Vector2(transform.position.x, randomHeight), Quaternion.identity);
+        GameObject instance = Instantiate(pipe, new Vector2(transform.position.x, randomHeight), Quaternion.identity);
+        Destroy(instance, 15f);
     }
 }

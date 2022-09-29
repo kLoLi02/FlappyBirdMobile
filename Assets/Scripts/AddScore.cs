@@ -4,8 +4,20 @@ using UnityEngine;
 
 public class AddScore : MonoBehaviour
 {
-    void OnCollisionEnter2D()
+    AudioSource pointAudio;
+
+    void Start()
     {
-        Score.score++;
+        pointAudio = GetComponent<AudioSource>();
+    }
+
+
+    void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.tag == "Bird")
+        {
+            Score.score++;
+            pointAudio.Play();
+        }
     }
 }

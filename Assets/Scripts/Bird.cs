@@ -6,9 +6,15 @@ using UnityEngine;
 
 public class Bird : MonoBehaviour
 {
+    [Header("Movement")]
     [SerializeField] float velocity;
 
+    [Header("Sounds")]
+    [SerializeField] AudioClip hitClip;
+    [SerializeField] AudioClip wingClip;
+
     GameManager gameManager;
+    AudioSource audioSource;
     Rigidbody2D rb;
 
     State state;
@@ -17,12 +23,14 @@ public class Bird : MonoBehaviour
     enum State
     {
         WaitingToStart,
-        Playing
+        Playing,
+        Dying
     }
 
     void Awake()
     {
         gameManager = FindObjectOfType<GameManager>();
+        audioSource = GetComponent<AudioSource>();
         rb = GetComponent<Rigidbody2D>();
     }
 
@@ -36,39 +44,52 @@ public class Bird : MonoBehaviour
     {
         if (isDead) { return; }
 
-        if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began && state == State.WaitingToStart)
+
+        switch (state)
         {
-            state = State.Playing;
-            rb.velocity = Vector2.up * velocity;
+            case State.WaitingToStart:
+                if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
+                {
+                    state = State.Playing;
 
-            rb.isKinematic = false;
+                    audioSource.PlayOneShot(wingClip);
+                    rb.velocity = Vector2.up * velocity;
 
-            gameManager.StartProcess();
-        }
+                    rb.isKinematic = false;
 
-        if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began && state == State.Playing)
-        {
-            rb.velocity = Vector2.up * velocity;
+                    gameManager.StartProcess();
+                }
+                break;
+            case State.Playing:
+                if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began && state == State.Playing)
+                {
+                    audioSource.PlayOneShot(wingClip);
+                    rb.velocity = Vector2.up * velocity;
+                }
+                break;
+            case State.Dying:
+                DyingProcess();
+                break;
         }
     }
 
     void OnTriggerEnter2D(Collider2D collision)
     {
-        DiyProcess();
+        state = State.Dying;
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.tag == "Ground")
         {
-            DiyProcess();
+            state = State.Dying;
         }
     }
-
-    void DiyProcess()
+    void DyingProcess()
     {
         gameManager.GameOverProcess();
         isDead = true;
         GetComponent<Animator>().SetTrigger("Dead");
+        audioSource.PlayOneShot(hitClip);
     }
 }
