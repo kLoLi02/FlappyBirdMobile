@@ -5,9 +5,11 @@ using UnityEngine;
 public class AddScore : MonoBehaviour
 {
     AudioSource pointAudio;
+    UIDisplay UIDisplay;
 
     void Start()
     {
+        UIDisplay = FindObjectOfType<UIDisplay>();
         pointAudio = GetComponent<AudioSource>();
     }
 
@@ -15,7 +17,7 @@ public class AddScore : MonoBehaviour
     {
         if (collision.CompareTag("Bird"))
         {
-            Score.score++;
+            UIDisplay.UpdateScore();
             pointAudio.Play();
         }
     }

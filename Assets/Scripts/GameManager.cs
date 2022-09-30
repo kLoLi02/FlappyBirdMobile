@@ -5,42 +5,36 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    GameOverDisplay gameOverDisplay;
+    UIDisplay UIDisplay;
     PipeSpawner pipeSpawner;
     IdleMovement idleMovement;
     SpriteScroller[] spriteScrollers;
-    MainDisplay mainDisplay;
-    Score score;
 
     void Awake()
     {
-        gameOverDisplay = FindObjectOfType<GameOverDisplay>();
+        UIDisplay = FindObjectOfType<UIDisplay>();
         pipeSpawner = FindObjectOfType<PipeSpawner>();
         idleMovement = FindObjectOfType<IdleMovement>();
         spriteScrollers = FindObjectsOfType<SpriteScroller>();
-        mainDisplay = FindObjectOfType<MainDisplay>();
-        score = FindObjectOfType<Score>();
     }
 
     void Start()
     {
-        gameOverDisplay.gameObject.SetActive(false);
         pipeSpawner.enabled = false;
-        score.gameObject.SetActive(false);
     }
 
     public void StartProcess()
     {
-        mainDisplay.MainDisplayStartProcess();
+        UIDisplay.DisableMainPanel();
         pipeSpawner.enabled = true;
         idleMovement.enabled = false;
-        score.gameObject.SetActive(true);
     }
 
     public void GameOverProcess()
     {
+        UIDisplay.EnableGameOverPanel();
+
         pipeSpawner.enabled = false;
-        gameOverDisplay.gameObject.SetActive(true);
         Move.speed = 0;
 
         foreach (var spriteScroller in spriteScrollers)
